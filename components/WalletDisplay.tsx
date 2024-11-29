@@ -1,6 +1,11 @@
 interface WalletData {
   balance: number;
-  recentTransactions: any[];
+  recentTransactions: {
+    signature: string;
+    timestamp: number;
+    amount: number;
+    type: 'incoming' | 'outgoing';
+  }[];
   address: string;
 }
 

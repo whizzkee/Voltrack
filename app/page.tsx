@@ -9,8 +9,24 @@ import LoadingSpinner from '../components/LoadingSpinner';
 
 interface WalletData {
   balance: number;
-  recentTransactions: any[];
+  recentTransactions: {
+    signature: string;
+    timestamp: number;
+    amount: number;
+    type: 'incoming' | 'outgoing';
+  }[];
   address: string;
+}
+
+interface ApiError {
+  response?: {
+    status: number;
+    data?: unknown;
+  };
+  name?: string;
+  message?: string;
+  code?: string;
+  stack?: string;
 }
 
 // Initialize Solana connection with Helius RPC endpoint
@@ -19,7 +35,7 @@ const HELIUS_RPC = `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`;
 const connection = new Connection(HELIUS_RPC);
 
 // Add explicit console logging function to ensure it works in Next.js
-const log = (...args: any[]) => {
+const log = (...args: unknown[]) => {
   console.log('[Voltrack]:', ...args);
 };
 
@@ -97,31 +113,34 @@ export default function Home() {
           recentTransactions: txResponse.data || [],
           address: pubKey.toString(),
         });
-      } catch (apiError: any) {
-        log('API Error:', apiError);
-        if (apiError.response?.status === 403) {
+      } catch (apiError: unknown) {
+        const error = apiError as ApiError;
+        log('API Error:', error);
+        if (error.response?.status === 403) {
           setError('RPC connection error. Please try again in a moment.');
-        } else if (apiError.response?.status === 429) {
+        } else if (error.response?.status === 429) {
           setError('Too many requests. Please try again later.');
         } else {
           setError('Failed to fetch wallet data. Please try again.');
         }
       }
-    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: unknown) {
+      const error = err as ApiError;
       setIsLoading(false);
-      log('Error type:', typeof err);
+      log('Error type:', typeof error);
       log('Error details:', {
-        name: err?.name,
-        message: err?.message,
-        code: err?.code,
-        stack: err?.stack,
-        response: err?.response,
-        raw: err
+        name: error.name,
+        message: error.message,
+        code: error.code,
+        stack: error.stack,
+        response: error.response,
+        raw: error
       });
 
-      if (err instanceof Error) {
-        log('Standard Error caught:', err.message);
-        if (err.message.includes('Invalid Solana wallet address')) {
+      if (error instanceof Error) {
+        log('Standard Error caught:', error.message);
+        if (error.message.includes('Invalid Solana wallet address')) {
           setError('Please enter a valid Solana wallet address');
           return;
         }
