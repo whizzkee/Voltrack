@@ -1,15 +1,5 @@
-# VolTrack - Solana Wallet Transaction Tracker
+# VolTrack - Solana Wallet Health Checker
 
-A Next.js application that allows users to track and analyze transactions for Solana wallets.
-
-## Features
-
-- Track Solana wallet transactions
-- View transaction history
-- Real-time wallet balance updates
-- Clean and modern UI built with TailwindCSS
-
-## Prerequisites
 
 Before you begin, ensure you have the following installed:
 - Node.js (v18 or higher)
@@ -19,7 +9,7 @@ Before you begin, ensure you have the following installed:
 
 1. Clone the repository:
 ```bash
-git clone [your-repository-url]
+git clone https://github.com/whizzkee/Voltrack.git
 cd voltrack
 ```
 
@@ -41,33 +31,13 @@ npm run dev
 - **Language**: TypeScript
 - **Styling**: TailwindCSS
 - **Blockchain Integration**: @solana/web3.js
-- **API Calls**: Axios
+- **API Calls**: Helius
 - **UI Components**: React 19.0
 
-## Project Structure
-
-- `/app` - Next.js app router pages and layouts
-- `/components` - Reusable React components
-  - `LoadingSpinner.tsx` - Loading animation component
-  - `WalletForm.tsx` - Wallet input form component
-  - `WalletDisplay.tsx` - Wallet information display component
-- `/public` - Static assets
-- `/styles` - Global styles and TailwindCSS configuration
-
 ## Development
-
-The application uses Next.js's App Router and is built with TypeScript for type safety. To start developing:
-
-1. Make changes to the code
-2. The page will auto-update as you edit files
-3. Use `npm run lint` to check for any code style issues
 
 ## Contributing
 
 1. Create a new branch for your feature
 2. Make your changes
 3. Submit a pull request
-
-## License
-
-[Your License Here]
